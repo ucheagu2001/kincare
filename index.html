@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KinCare | Professional Managed Home & Care Services by Nexim Healthcare</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Include EmailJS SDK -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <!-- Include Supabase JavaScript SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script type="text/javascript">
+        // Initialize EmailJS
+        (function() {
+            emailjs.init("v8BeDRcOH1-Gn2cIL");
+        })();
+
+        // Initialize Supabase Client with your keys
+        const SUPABASE_URL = "https://iclcpdvuhlxrqxcuwcii.supabase.co";
+        const SUPABASE_ANON_KEY = "sb_publishable_3Tfsp7iDxk7Mj6xOR4sKTw_vKQe1dbC";
+        const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    </script>
+    <style>
+        :root {
+            --primary: #2B4C3F;
+            --accent: #E08A5C;
+            --bg-light: #F9F8F6;
+            --text-dark: #222222;
+            --white: #FFFFFF;
+            --card-border: #E3E0D8;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        /* Top Corporate Bar */
+        .corporate-bar {
+            background: #1a2e26;
+            color: #d1d5db;
+            font-size: 12px;
+            padding: 6px 5%;
+            text-align: right;
+            letter-spacing: 0.5px;
+        }
+
+        /* Navigation */
+        header {
+            background: var(--white);
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--card-border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo-area {
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+            letter-spacing: -0.5px;
+        }
+
+        .sub-logo {
+            font-size: 11px;
+            color: #666;
+            font-weight: 500;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 500;
+            font-size: 15px;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        nav a:hover {
+            color: var(--accent);
+        }
+
+        .btn-outline {
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            background: transparent;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        .btn-solid {
+            background: var(--accent);
+            color: var(--white);
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            font-size: 14px;
+        }
+
+        .btn-solid:hover {
+            opacity: 0.9;
+        }
+
+        /* Page Switcher */
+        .page-view {
+            display: none;
+            padding: 50px 5%;
+            min-height: 75vh;
+        }
+
+        .page-view.active {
+            display: block;
+        }
+
+        /* Hero with Photo background blend */
+        .agency-hero {
+            background: linear-gradient(rgba(43, 76, 63, 0.9), rgba(43, 76, 63, 0.9)), url('https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=1200&q=80') center/cover;
+            color: var(--white);
+            padding: 80px 5%;
+            border-radius: 16px;
+            margin-bottom: 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .agency-hero-content {
+            max-width: 650px;
+        }
+
+        .agency-hero h1 {
+            font-size: 42px;
+            margin-bottom: 20px;
+            letter-spacing: -0.5px;
+            line-height: 1.2;
+        }
+
+        .agency-hero p {
+            font-size: 18px;
+            opacity: 0.95;
+            margin-bottom: 30px;
+        }
+
+        /* Grids & Cards with Images */
+        .section-title {
+            font-size: 28px;
+            color: var(--primary);
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .section-subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: var(--white);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .card-content {
+            padding: 25px;
+        }
+
+        .card h3 {
+            color: var(--primary);
+            margin-bottom: 10px;
+            font-size: 20px;
+        }
+
+        .card p {
+            color: #555;
+            font-size: 15px;
+        }
+
+        /* Forms Layout & Dashboard Styling */
+        .form-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: var(--white);
+            padding: 40px;
+            border-radius: 12px;
+            border: 1px solid var(--card-border);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+        }
+
+        .form-container h2 {
+            color: var(--primary);
+            margin-bottom: 10px;
+            font-size: 26px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-dark);
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 15px;
+            outline: none;
+            background: var(--white);
+        }
+
+        /* Toggle tabs for Login / Register */
+        .auth-tabs {
+            display: flex;
+            margin-bottom: 25px;
+            border-bottom: 2px solid var(--card-border);
+        }
+
+        .auth-tab {
+            flex: 1;
+            padding: 12px;
+            text-align: center;
+            font-weight: 600;
+            cursor: pointer;
+            color: #666;
+            background: none;
+            border: none;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .auth-tab.active {
+            color: var(--primary);
+            border-bottom: 3px solid var(--primary);
+            margin-bottom: -2px;
+        }
+
+        .auth-form-section {
+            display: none;
+        }
+
+        .auth-form-section.active {
+            display: block;
+        }
+
+        /* Dashboard specific view */
+        .dashboard-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .dashboard-header {
+            background: var(--primary);
+            color: var(--white);
+            padding: 30px;
+            border-radius: 12px 12px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .dashboard-body {
+            background: var(--white);
+            padding: 30px;
+            border: 1px solid var(--card-border);
+            border-top: none;
+            border-radius: 0 0 12px 12px;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .dash-card {
+            background: var(--bg-light);
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid var(--card-border);
+        }
+
+        .dash-card h4 {
+            color: var(--primary);
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+
+        /* Admin Table Styles */
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            font-size: 14px;
+        }
+
+        .admin-table th, .admin-table td {
+            padding: 12px;
+            border: 1px solid var(--card-border);
+            text-align: left;
+        }
+
+        .admin-table th {
+            background: var(--bg-light);
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        /* Footer */
+        footer {
+            background: #1a2e26;
+            color: #aaa;
+            padding: 40px 5%;
+            text-align: center;
+            font-size: 13px;
+        }
+
+        @media (max-width: 768px) {
+            .agency-hero {
+                flex-direction: column;
+                padding: 40px 5%;
+            }
+            .agency-hero h1 {
+                font-size: 32px;
+            }
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Corporate Parent Bar -->
+    <div class="corporate-bar">
+        A Managed Care & Household Support Division of <strong>Nexim Healthcare Consultants Inc.</strong>
+    </div>
+
+    <!-- Header Navigation -->
+    <header>
+        <div class="logo-area" onclick="switchPage('home')">
+            <span class="logo">KinCare.</span>
+            <span class="sub-logo">by Nexim Healthcare</span>
+        </div>
+        <nav>
+            <a onclick="switchPage('home')">Home</a>
+            <a onclick="switchPage('services')">Managed Services</a>
+            <a onclick="switchPage('model')">The Nexim Advantage</a>
+            <a onclick="switchPage('client-login')" class="btn-outline" id="navPortalBtn">Client Portal</a>
+            <a onclick="switchPage('admin-login')" style="color: var(--accent); font-weight: 600;">Coordinator Portal</a>
+            <a onclick="switchPage('consultation')" class="btn-solid">Request Care & Errands</a>
+        </nav>
+    </header>
+
+    <!-- 1. HOME PAGE -->
+    <div id="page-home" class="page-view active">
+        <div class="agency-hero">
+            <div class="agency-hero-content">
+                <h1>Fully Managed Care, Homekeeping & Errand Services in Ontario</h1>
+                <p>Backed by Nexim Healthcare Consultants Inc. We hand-pick, vet, and manage trusted professionals for childcare, eldercare, homekeeping, and daily household errands.</p>
+                <button class="btn-solid" onclick="switchPage('consultation')" style="background: var(--white); color: var(--primary);">Request a Family Consultation</button>
+            </div>
+        </div>
+
+        <div class="section-title">Comprehensive Household Support Across Ontario</div>
+        <p class="section-subtitle">We remove the stress of managing daily chores, coordinating reliable assistance, and verifying care professionals.</p>
+        
+        <div class="grid">
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=600&q=80" alt="Childcare and Nannies">
+                <div class="card-content">
+                    <h3>Vetted Childcare & Nannies</h3>
+                    <p>Rigorous background checks and clinical interview screenings for full-time, part-time, and infant care specialists.</p>
+                </div>
+            </div>
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?auto=format&fit=crop&w=600&q=80" alt="Eldercare support">
+                <div class="card-content">
+                    <h3>Professional Eldercare</h3>
+                    <p>Compassionate, trained support professionals providing specialized senior care, companionship, and daily assistance.</p>
+                </div>
+            </div>
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=600&q=80" alt="Homekeeping and cleaning">
+                <div class="card-content">
+                    <h3>Homekeeping & Cleaning</h3>
+                    <p>Reliable housekeeping professionals ensuring your home stays immaculate, organized, and running smoothly week after week.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. MANAGED SERVICES PAGE -->
+    <div id="page-services" class="page-view">
+        <div class="section-title">Our Managed Home & Care Solutions</div>
+        <p class="section-subtitle">Tailored assistance packages matched to your household routine across the GTA and Ontario.</p>
+
+        <div class="grid">
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?auto=format&fit=crop&w=600&q=80" alt="Nanny Care">
+                <div class="card-content">
+                    <h3>Childcare & Nanny Services</h3>
+                    <p>Dedicated daily care focusing on child development, educational play, and structured household schedules.</p>
+                </div>
+            </div>
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?auto=format&fit=crop&w=600&q=80" alt="Eldercare">
+                <div class="card-content">
+                    <h3>Senior & Eldercare Support</h3>
+                    <p>Dignified, professional daily living assistance, health monitoring support, and comforting companionship for seniors.</p>
+                </div>
+            </div>
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1527515637462-cff94eecc1ac?auto=format&fit=crop&w=600&q=80" alt="Homekeeping">
+                <div class="card-content">
+                    <h3>Homekeeping & Organization</h3>
+                    <p>Thorough residential cleaning, laundry management, linen changes, and orderly home maintenance.</p>
+                </div>
+            </div>
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?auto=format&fit=crop&w=600&q=80" alt="Grocery and Errands">
+                <div class="card-content">
+                    <h3>Grocery Shopping & Errands</h3>
+                    <p>Reliable personal assistants to handle weekly grocery runs, dry cleaning pickups, prescription deliveries, and household errands.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. THE MODEL PAGE -->
+    <div id="page-model" class="page-view">
+        <div class="section-title">The Nexim Managed Support Model</div>
+        <p class="section-subtitle">Transparent, reliable, and compliant service management.</p>
+
+        <div class="grid">
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=600&q=80" alt="Consultation">
+                <div class="card-content">
+                    <h3>1. Initial Consultation</h3>
+                    <p>We meet with your family to map out your childcare, eldercare, homekeeping, or errand schedules.</p>
+                </div>
+            </div>
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=600&q=80" alt="Matching">
+                <div class="card-content">
+                    <h3>2. Hand-Picked Matching</h3>
+                    <p>Our management team selects the ideal vetted professional from our roster to match your household needs.</p>
+                </div>
+            </div>
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=600&q=80" alt="Billing">
+                <div class="card-content">
+                    <h3>3. Simple Managed Billing</h3>
+                    <p>Pay through convenient, all-inclusive invoices via Interac e-Transfer while we handle compliance and oversight.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. CLIENT PORTAL / SUPABASE AUTH & REGISTER -->
+    <div id="page-client-login" class="page-view">
+        <div class="form-container" id="authBox">
+            <div class="auth-tabs">
+                <button class="auth-tab active" id="tabLoginBtn" onclick="switchAuthTab('login')">Sign In</button>
+                <button class="auth-tab" id="tabRegisterBtn" onclick="switchAuthTab('register')">Register Account</button>
+            </div>
+
+            <!-- Login Form -->
+            <div class="auth-form-section active" id="loginSection">
+                <h2>Client Portal Login</h2>
+                <p style="color: #666; font-size: 14px; margin-bottom: 25px;">Sign in securely with your verified account credentials.</p>
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" id="loginEmail" placeholder="name@example.com">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="loginPassword" placeholder="Enter your password">
+                </div>
+                <button class="btn-solid" style="width: 100%; padding: 12px;" onclick="handleSupabaseLogin()">Access Portal</button>
+            </div>
+
+            <!-- Register Form -->
+            <div class="auth-form-section" id="registerSection">
+                <h2>Create Client Account</h2>
+                <p style="color: #666; font-size: 14px; margin-bottom: 25px;">Register your family profile into our secure database.</p>
+                <form id="registerForm" onsubmit="handleSupabaseRegister(event)">
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" id="regName" placeholder="Jane Doe" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" id="regEmail" placeholder="name@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Create Secure Password</label>
+                        <input type="password" id="regPassword" placeholder="At least 6 characters" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Ontario Region / City</label>
+                        <select id="regRegion">
+                            <option>Toronto (GTA)</option>
+                            <option>Peel Region (Mississauga/Brampton)</option>
+                            <option>York Region (Markham/Vaughan)</option>
+                            <option>Ottawa Region</option>
+                            <option>Niagara / Thorold Region</option>
+                            <option>Other Ontario Location</option>
+                        </select>
+                    </div>
+                    <button type="submit" id="regBtn" class="btn-solid" style="width: 100%; padding: 12px;">Complete Registration</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Client Dashboard View -->
+        <div class="dashboard-container" id="dashboardView" style="display: none;">
+            <div class="dashboard-header">
+                <div>
+                    <h2 id="welcomeUserHeading">Welcome, Family Client</h2>
+                    <p style="font-size: 14px; opacity: 0.9;">Managed Account Status: <span style="color: #4ade80; font-weight: 600;">● Active</span></p>
+                </div>
+                <button class="btn-outline" style="border-color: var(--white); color: var(--white);" onclick="handleSupabaseLogout()">Sign Out</button>
+            </div>
+            <div class="dashboard-body">
+                <h3 style="color: var(--primary); margin-bottom: 5px;">Your Assigned Care & Support Professional</h3>
+                <p style="color: #666; font-size: 14px; margin-bottom: 20px;">Nexim Healthcare Support Team (Ontario Region)</p>
+
+                <div class="dashboard-grid">
+                    <div class="dash-card">
+                        <h4>Assigned Professional</h4>
+                        <p id="dashCaregiverName" style="font-size: 15px; font-weight: 600; color: var(--text-dark);">Sarah Miller, RPN / Care Specialist</p>
+                        <p id="dashCaregiverDetails" style="font-size: 13px; color: #666; margin-top: 4px;">Police Checked & Fully Verified</p>
+                    </div>
+                    <div class="dash-card">
+                        <h4>Active Weekly Schedule</h4>
+                        <p id="dashScheduleDays" style="font-size: 15px; font-weight: 600; color: var(--text-dark);">Monday – Friday</p>
+                        <p id="dashScheduleHours" style="font-size: 13px; color: #666; margin-top: 4px;">8:00 AM – 4:00 PM (Managed Service)</p>
+                    </div>
+                    <div class="dash-card">
+                        <h4>Managed Billing Summary</h4>
+                        <p style="font-size: 15px; font-weight: 600; color: var(--text-dark);">All-Inclusive Service Rate</p>
+                        <p style="font-size: 13px; color: #666; margin-top: 4px;">Payment Method: <strong>Interac e-Transfer</strong></p>
+                        <div style="margin-top: 10px; background: #fff; padding: 10px; border-radius: 6px; border: 1px dashed var(--card-border);">
+                            <p style="font-size: 12px; color: var(--text-dark);"><strong>Send E-Transfers to:</strong></p>
+                            <p style="font-size: 13px; color: var(--primary); font-weight: 600;">billing@kincare.ca</p>
+                            <p style="font-size: 11px; color: #666; margin-top: 2px;">(Auto-deposit enabled. Include your family name in notes).</p>
+                        </div>
+                    </div>
+                    <div class="dash-card">
+                        <h4>Support & Adjustments</h4>
+                        <p style="font-size: 14px; color: #555;">Need to add grocery runs, schedule homekeeping, or request a service adjustment? Contact your coordinator.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5. ADMIN / COORDINATOR PORTAL VIEW -->
+    <div id="page-admin-login" class="page-view">
+        <div class="form-container" id="adminLoginBox">
+            <h2>Coordinator Portal</h2>
+            <p style="color: #666; font-size: 14px; margin-bottom: 25px;">Restricted access for Nexim care management staff.</p>
+            <div class="form-group">
+                <label>Coordinator Access PIN / Code</label>
+                <input type="password" id="adminPin" placeholder="Enter admin code">
+            </div>
+            <button class="btn-solid" style="width: 100%; padding: 12px;" onclick="handleAdminLogin()">Open Admin Panel</button>
+        </div>
+
+        <!-- Admin Dashboard Panel -->
+        <div class="dashboard-container" id="adminDashboardView" style="display: none;">
+            <div class="dashboard-header" style="background: #1a2e26;">
+                <div>
+                    <h2>Nexim Care Coordinator Command Center</h2>
+                    <p style="font-size: 14px; opacity: 0.9;">Live Registered Families Database</p>
+                </div>
+                <button class="btn-outline" style="border-color: var(--white); color: var(--white);" onclick="handleAdminLogout()">Lock Panel</button>
+            </div>
+            <div class="dashboard-body">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                    <h3 style="color: var(--primary);">Registered Client Directory</h3>
+                    <button class="btn-outline" onclick="loadAdminProfiles()" style="padding: 6px 12px; font-size: 13px;">Refresh List</button>
+                </div>
+                <p style="color: #666; font-size: 14px; margin-bottom: 15px;">Below is the live roster of families who have created accounts in your Supabase database.</p>
+                
+                <div style="overflow-x: auto;">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Client Name</th>
+                                <th>Email Address</th>
+                                <th>Ontario Region</th>
+                                <th>Assigned Professional</th>
+                                <th>Account Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminProfilesTableBody">
+                            <tr>
+                                <td colspan="5" style="text-align: center; color: #666;">Click "Refresh List" to load records from Supabase...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Quick Assign Form (Includes Client Name & Assigned Professional Dropdowns) -->
+                <div style="margin-top: 25px; background: var(--bg-light); padding: 20px; border-radius: 8px; border: 1px solid var(--card-border);">
+                    <h4 style="color: var(--primary); margin-bottom: 10px;">Quick Assign Professional & Schedule</h4>
+                    <form id="updateAssignmentForm" onsubmit="updateClientAssignment(event)" style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr auto; gap: 10px; align-items: end;">
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label style="font-size: 12px;">Client Name</label>
+                            <input type="text" id="updateClientName" placeholder="e.g. Jane Doe" required style="padding: 8px; font-size: 13px;">
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label style="font-size: 12px;">Client Email</label>
+                            <input type="email" id="updateClientEmail" placeholder="client@example.com" required style="padding: 8px; font-size: 13px;">
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label style="font-size: 12px;">Assigned Professional</label>
+                            <select id="updateCaregiver" style="padding: 8px; font-size: 13px;">
+                                <option>Sarah Miller, RPN / Care Specialist</option>
+                                <option>Jessica Taylor, PSW / Senior Support</option>
+                                <option>Michael Brown, Housekeeping Specialist</option>
+                                <option>David Wilson, Errand & Delivery Assistant</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label style="font-size: 12px;">Assigned Schedule</label>
+                            <select id="updateSchedule" style="padding: 8px; font-size: 13px;">
+                                <option>Monday – Friday (Full-Time)</option>
+                                <option>Tuesday & Thursday (Part-Time)</option>
+                                <option>Weekly Errand / Homekeeping Run</option>
+                                <option>As-Needed Custom Schedule</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn-solid" style="padding: 9px 15px; font-size: 13px;">Update</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 6. CONSULTATION / REQUEST CARE PAGE -->
+    <div id="page-consultation" class="page-view">
+        <div class="form-container">
+            <h2>Request Care, Homekeeping or Errands</h2>
+            <p style="color: #666; font-size: 14px; margin-bottom: 25px;">Tell us what support your household requires and our team will get in touch promptly.</p>
+            
+            <form id="consultationForm" onsubmit="sendConsultationEmail(event)">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" id="parentName" placeholder="Jane Doe" required>
+                </div>
+                <div class="form-group">
+                    <label>Ontario Region / City</label>
+                    <select id="parentRegion">
+                        <option>Toronto (GTA)</option>
+                        <option>Peel Region (Mississauga/Brampton)</option>
+                        <option>York Region (Markham/Vaughan)</option>
+                        <option>Ottawa Region</option>
+                        <option>Niagara / Thorold Region</option>
+                        <option>Other Ontario Location</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Type of Service Needed</label>
+                    <select id="careType">
+                        <option>Childcare & Nanny Services</option>
+                        <option>Eldercare & Senior Support</option>
+                        <option>Homekeeping & House Cleaning</option>
+                        <option>Grocery Shopping & Errands</option>
+                        <option>Combined Household Support Package</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Best Contact Email & Phone</label>
+                    <input type="text" id="contactInfo" placeholder="email@example.com / (416) 000-0000" required>
+                </div>
+                <button type="submit" id="submitBtn" class="btn-solid" style="width: 100%; padding: 12px;">Submit Request</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 KinCare. A Managed Division of <strong>Nexim Healthcare Consultants Inc.</strong> All rights reserved.</p>
+        <p style="margin-top: 5px;">Providing professional, fully managed home care, eldercare, homekeeping, and errand services across Ontario.</p>
+    </footer>
+
+    <!-- Scripting for Navigation, Supabase, and Admin Panel -->
+    <script>
+        function switchPage(pageId) {
+            document.querySelectorAll('.page-view').forEach(p => p.classList.remove('active'));
+            const target = document.getElementById('page-' + pageId);
+            if (target) {
+                target.classList.add('active');
+            }
+            window.scrollTo(0, 0);
+        }
+
+        function switchAuthTab(tab) {
+            const loginSec = document.getElementById('loginSection');
+            const regSec = document.getElementById('registerSection');
+            const tabLogin = document.getElementById('tabLoginBtn');
+            const tabReg = document.getElementById('tabRegisterBtn');
+
+            if(tab === 'login') {
+                loginSec.classList.add('active');
+                regSec.classList.remove('active');
+                tabLogin.classList.add('active');
+                tabReg.classList.remove('active');
+            } else {
+                regSec.classList.add('active');
+                loginSec.classList.remove('active');
+                tabReg.classList.add('active');
+                tabLogin.classList.remove('active');
+            }
+        }
+
+        // EmailJS Consultation Handler
+        function sendConsultationEmail(event) {
+            event.preventDefault();
+            const btn = document.getElementById('submitBtn');
+            btn.innerText = "Sending Request...";
+            btn.disabled = true;
+
+            const templateParams = {
+                from_name: document.getElementById('parentName').value,
+                region: document.getElementById('parentRegion').value,
+                care_type: document.getElementById('careType').value,
+                contact_info: document.getElementById('contactInfo').value
+            };
+
+            emailjs.send("service_pm9hj4q", "template_peq98zr", templateParams)
+                .then(function(response) {
+                    alert('Request sent successfully! A Nexim care coordinator will contact you shortly.');
+                    document.getElementById('consultationForm').reset();
+                    btn.innerText = "Submit Request";
+                    btn.disabled = false;
+                }, function(error) {
+                    alert('Failed to send request. Please check your connection.');
+                    btn.innerText = "Submit Request";
+                    btn.disabled = false;
+                });
+        }
+
+        // Supabase Registration
+        async function handleSupabaseRegister(event) {
+            event.preventDefault();
+            const btn = document.getElementById('regBtn');
+            btn.innerText = "Creating Account...";
+            btn.disabled = true;
+
+            const name = document.getElementById('regName').value;
+            const email = document.getElementById('regEmail').value;
+            const password = document.getElementById('regPassword').value;
+            const region = document.getElementById('regRegion').value;
+
+            const { data, error } = await _supabase.auth.signUp({
+                email: email,
+                password: password,
+                options: { data: { full_name: name, region: region } }
+            });
+
+            if (error) {
+                alert("Registration failed: " + error.message);
+                btn.innerText = "Complete Registration";
+                btn.disabled = false;
+                return;
+            }
+
+            if (data.user) {
+                await _supabase.from('profiles').insert([
+                    { 
+                        id: data.user.id, 
+                        full_name: name, 
+                        email: email, 
+                        region: region,
+                        assigned_caregiver: "Sarah Miller, RPN / Care Specialist",
+                        careriver_details: "Police Checked & Fully Verified",
+                        weekly_schedule: "Monday – Friday",
+                        schedule_time: "8:00 AM – 4:00 PM (Managed Service)"
+                    }
+                ]);
+            }
+
+            const templateParams = {
+                from_name: name,
+                region: region,
+                care_type: "New Database Portal Registration",
+                contact_info: email
+            };
+            emailjs.send("service_pm9hj4q", "template_peq98zr", templateParams);
+
+            alert('Account registered successfully! You can now sign in.');
+            btn.innerText = "Complete Registration";
+            btn.disabled = false;
+            switchAuthTab('login');
+        }
+
+        // Supabase Login (Fetches dynamic profile & assigned professional data)
+        async function handleSupabaseLogin() {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            if(!email || !password) {
+                alert('Please enter both email and password.');
+                return;
+            }
+
+            const { data, error } = await _supabase.auth.signInWithPassword({
+                email: email,
+                password: password
+            });
+
+            if (error) {
+                alert("Login failed: " + error.message);
+            } else {
+                const userId = data.user.id;
+                const { data: profileData } = await _supabase
+                    .from('profiles')
+                    .select('*')
+                    .eq('id', userId)
+                    .single();
+
+                let displayName = email.split('@')[0];
+                if (profileData && profileData.full_name) {
+                    displayName = profileData.full_name;
+                }
+
+                document.getElementById('welcomeUserHeading').innerText = "Welcome, " + displayName;
+                
+                if (profileData) {
+                    if(profileData.assigned_caregiver) {
+                        document.getElementById('dashCaregiverName').innerText = profileData.assigned_caregiver;
+                    }
+                    if(profileData.weekly_schedule) {
+                        document.getElementById('dashScheduleDays').innerText = profileData.weekly_schedule;
+                    }
+                    if(profileData.schedule_time) {
+                        document.getElementById('dashScheduleHours').innerText = profileData.schedule_time;
+                    }
+                }
+
+                document.getElementById('authBox').style.display = 'none';
+                document.getElementById('dashboardView').style.display = 'block';
+                document.getElementById('navPortalBtn').innerText = "My Dashboard";
+            }
+        }
+
+        // Supabase Logout
+        async function handleSupabaseLogout() {
+            await _supabase.auth.signOut();
+            document.getElementById('authBox').style.display = 'block';
+            document.getElementById('dashboardView').style.display = 'none';
+            document.getElementById('loginEmail').value = '';
+            document.getElementById('loginPassword').value = '';
+            document.getElementById('navPortalBtn').innerText = "Client Portal";
+            switchAuthTab('login');
+        }
+
+        // ADMIN LOGIN & DATA FETCHING
+        function handleAdminLogin() {
+            const pin = document.getElementById('adminPin').value;
+            if(pin === "nexim2026") {
+                document.getElementById('adminLoginBox').style.display = 'none';
+                document.getElementById('adminDashboardView').style.display = 'block';
+                loadAdminProfiles();
+            } else {
+                alert('Invalid coordinator access code.');
+            }
+        }
+
+        async function loadAdminProfiles() {
+            const tableBody = document.getElementById('adminProfilesTableBody');
+            tableBody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: #666;">Loading client records from Supabase...</td></tr>`;
+
+            const { data, error } = await _supabase
+                .from('profiles')
+                .select('*');
+
+            if (error) {
+                tableBody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: red;">Error loading records: ${error.message}</td></tr>`;
+                return;
+            }
+
+            if (!data || data.length === 0) {
+                tableBody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: #666;">No registered client profiles found yet.</td></tr>`;
+                return;
+            }
+
+            let rowsHTML = "";
+            data.forEach(profile => {
+                rowsHTML += `
+                    <tr>
+                        <td><strong>${profile.full_name || 'N/A'}</strong></td>
+                        <td>${profile.email || 'N/A'}</td>
+                        <td>${profile.region || 'N/A'}</td>
+                        <td>${profile.assigned_caregiver || 'Sarah Miller, RPN'}</td>
+                        <td><span style="color: #4ade80; font-weight: 600;">● Active</span></td>
+                    </tr>
+                `;
+            });
+            tableBody.innerHTML = rowsHTML;
+        }
+
+        // QUICK ASSIGN FORM HANDLER FOR COORDINATORS (Updates by email and matches name)
+        async function updateClientAssignment(event) {
+            event.preventDefault();
+            const clientName = document.getElementById('updateClientName').value;
+            const email = document.getElementById('updateClientEmail').value;
+            const caregiver = document.getElementById('updateCaregiver').value;
+            const schedule = document.getElementById('updateSchedule').value;
+
+            if(!email) {
+                alert('Please enter the client email to update.');
+                return;
+            }
+
+            const { data, error } = await _supabase
+                .from('profiles')
+                .update({ 
+                    full_name: clientName,
+                    assigned_caregiver: caregiver,
+                    weekly_schedule: schedule 
+                })
+                .eq('email', email);
+
+            if (error) {
+                alert('Update failed: ' + error.message);
+            } else {
+                alert('Client assignment updated successfully for ' + clientName + '!');
+                document.getElementById('updateAssignmentForm').reset();
+                loadAdminProfiles(); // Refresh the directory table
+            }
+        }
+
+        function handleAdminLogout() {
+            document.getElementById('adminLoginBox').style.display = 'block';
+            document.getElementById('adminDashboardView').style.display = 'none';
+            document.getElementById('adminPin').value = '';
+        }
+    </script>
+</body>
+</html>
