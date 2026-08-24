@@ -273,40 +273,6 @@
             background: var(--white);
         }
 
-        /* Toggle tabs for Login / Register */
-        .auth-tabs {
-            display: flex;
-            margin-bottom: 25px;
-            border-bottom: 2px solid var(--card-border);
-        }
-
-        .auth-tab {
-            flex: 1;
-            padding: 12px;
-            text-align: center;
-            font-weight: 600;
-            cursor: pointer;
-            color: #666;
-            background: none;
-            border: none;
-            font-size: 16px;
-            transition: all 0.3s;
-        }
-
-        .auth-tab.active {
-            color: var(--primary);
-            border-bottom: 3px solid var(--primary);
-            margin-bottom: -2px;
-        }
-
-        .auth-form-section {
-            display: none;
-        }
-
-        .auth-form-section.active {
-            display: block;
-        }
-
         /* Dashboard specific view */
         .dashboard-container {
             max-width: 900px;
@@ -522,60 +488,23 @@
         </div>
     </div>
 
-    <!-- 4. CLIENT PORTAL / SUPABASE AUTH & REGISTER -->
+    <!-- 4. CLIENT PORTAL / SECURE SIGN IN (Invite Only) -->
     <div id="page-client-login" class="page-view">
         <div class="form-container" id="authBox">
-            <div class="auth-tabs">
-                <button class="auth-tab active" id="tabLoginBtn" onclick="switchAuthTab('login')">Sign In</button>
-                <button class="auth-tab" id="tabRegisterBtn" onclick="switchAuthTab('register')">Register Account</button>
+            <h2>Client Portal Sign In</h2>
+            <p style="color: #666; font-size: 14px; margin-bottom: 25px;">Access is restricted to families with active managed service accounts invited by Nexim.</p>
+            <div class="form-group">
+                <label>Email Address</label>
+                <input type="email" id="loginEmail" placeholder="name@example.com">
             </div>
-
-            <!-- Login Form -->
-            <div class="auth-form-section active" id="loginSection">
-                <h2>Client Portal Login</h2>
-                <p style="color: #666; font-size: 14px; margin-bottom: 25px;">Sign in securely with your verified account credentials.</p>
-                <div class="form-group">
-                    <label>Email Address</label>
-                    <input type="email" id="loginEmail" placeholder="name@example.com">
-                </div>
-                <div class="form-group">
-                    <label>Password</label>
-                    <input type="password" id="loginPassword" placeholder="Enter your password">
-                </div>
-                <button class="btn-solid" style="width: 100%; padding: 12px;" onclick="handleSupabaseLogin()">Access Portal</button>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="loginPassword" placeholder="Enter your password">
             </div>
-
-            <!-- Register Form -->
-            <div class="auth-form-section" id="registerSection">
-                <h2>Create Client Account</h2>
-                <p style="color: #666; font-size: 14px; margin-bottom: 25px;">Register your family profile into our secure database.</p>
-                <form id="registerForm" onsubmit="handleSupabaseRegister(event)">
-                    <div class="form-group">
-                        <label>Full Name</label>
-                        <input type="text" id="regName" placeholder="Jane Doe" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Email Address</label>
-                        <input type="email" id="regEmail" placeholder="name@example.com" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Create Secure Password</label>
-                        <input type="password" id="regPassword" placeholder="At least 6 characters" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Ontario Region / City</label>
-                        <select id="regRegion">
-                            <option>Toronto (GTA)</option>
-                            <option>Peel Region (Mississauga/Brampton)</option>
-                            <option>York Region (Markham/Vaughan)</option>
-                            <option>Ottawa Region</option>
-                            <option>Niagara / Thorold Region</option>
-                            <option>Other Ontario Location</option>
-                        </select>
-                    </div>
-                    <button type="submit" id="regBtn" class="btn-solid" style="width: 100%; padding: 12px;">Complete Registration</button>
-                </form>
+            <div style="text-align: right; margin-bottom: 20px; margin-top: -10px;">
+                <a href="#" onclick="handleForgotPassword(event)" style="font-size: 13px; color: var(--accent); text-decoration: none;">Forgot Password?</a>
             </div>
+            <button class="btn-solid" style="width: 100%; padding: 12px;" onclick="handleSupabaseLogin()">Access Portal</button>
         </div>
 
         <!-- Client Dashboard View -->
@@ -613,8 +542,8 @@
                         </div>
                     </div>
                     <div class="dash-card">
-                        <h4>Support & Adjustments</h4>
-                        <p style="font-size: 14px; color: #555;">Need to add grocery runs, schedule homekeeping, or request a service adjustment? Contact your coordinator.</p>
+                        <h4>Daily Visit & Care Notes</h4>
+                        <p id="dashCareNotes" style="font-size: 14px; color: #555; font-style: italic;">"No notes posted for today yet. Your professional will update logs following their visit."</p>
                     </div>
                 </div>
             </div>
@@ -638,7 +567,7 @@
             <div class="dashboard-header" style="background: #1a2e26;">
                 <div>
                     <h2>Nexim Care Coordinator Command Center</h2>
-                    <p style="font-size: 14px; opacity: 0.9;">Live Registered Families Database</p>
+                    <p style="font-size: 14px; opacity: 0.9;">Active Client Directory & Assignments</p>
                 </div>
                 <button class="btn-outline" style="border-color: var(--white); color: var(--white);" onclick="handleAdminLogout()">Lock Panel</button>
             </div>
@@ -647,7 +576,7 @@
                     <h3 style="color: var(--primary);">Registered Client Directory</h3>
                     <button class="btn-outline" onclick="loadAdminProfiles()" style="padding: 6px 12px; font-size: 13px;">Refresh List</button>
                 </div>
-                <p style="color: #666; font-size: 14px; margin-bottom: 15px;">Below is the live roster of families who have created accounts in your Supabase database.</p>
+                <p style="color: #666; font-size: 14px; margin-bottom: 15px;">Review client profiles, manage assigned professionals, and update visit logs.</p>
                 
                 <div style="overflow-x: auto;">
                     <table class="admin-table">
@@ -655,9 +584,9 @@
                             <tr>
                                 <th>Client Name</th>
                                 <th>Email Address</th>
-                                <th>Ontario Region</th>
+                                <th>Region</th>
                                 <th>Assigned Professional</th>
-                                <th>Account Status</th>
+                                <th>Status</th>
                             </tr>
                         </thead>
                         <tbody id="adminProfilesTableBody">
@@ -668,10 +597,10 @@
                     </table>
                 </div>
 
-                <!-- Quick Assign Form (Includes Client Name & Assigned Professional Dropdowns) -->
+                <!-- Quick Assign & Care Notes Form -->
                 <div style="margin-top: 25px; background: var(--bg-light); padding: 20px; border-radius: 8px; border: 1px solid var(--card-border);">
-                    <h4 style="color: var(--primary); margin-bottom: 10px;">Quick Assign Professional & Schedule</h4>
-                    <form id="updateAssignmentForm" onsubmit="updateClientAssignment(event)" style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr auto; gap: 10px; align-items: end;">
+                    <h4 style="color: var(--primary); margin-bottom: 10px;">Quick Assign Professional & Update Care Notes</h4>
+                    <form id="updateAssignmentForm" onsubmit="updateClientAssignment(event)" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
                         <div class="form-group" style="margin-bottom: 0;">
                             <label style="font-size: 12px;">Client Name</label>
                             <input type="text" id="updateClientName" placeholder="e.g. Jane Doe" required style="padding: 8px; font-size: 13px;">
@@ -681,7 +610,7 @@
                             <input type="email" id="updateClientEmail" placeholder="client@example.com" required style="padding: 8px; font-size: 13px;">
                         </div>
                         <div class="form-group" style="margin-bottom: 0;">
-                            <label style="font-size: 12px;">Assigned Professional</label>
+                            <label style="font-size: 12px;">Assign Professional</label>
                             <select id="updateCaregiver" style="padding: 8px; font-size: 13px;">
                                 <option>Sarah Miller, RPN / Care Specialist</option>
                                 <option>Jessica Taylor, PSW / Senior Support</option>
@@ -698,14 +627,20 @@
                                 <option>As-Needed Custom Schedule</option>
                             </select>
                         </div>
-                        <button type="submit" class="btn-solid" style="padding: 9px 15px; font-size: 13px;">Update</button>
+                        <div class="form-group" style="grid-column: span 2; margin-bottom: 0;">
+                            <label style="font-size: 12px;">Daily Visit / Service Note</label>
+                            <textarea id="updateCareNotes" placeholder="Enter today's visit summary, tasks completed, or family notes..." style="padding: 8px; font-size: 13px; height: 70px;"></textarea>
+                        </div>
+                        <div style="grid-column: span 2; text-align: right;">
+                            <button type="submit" class="btn-solid" style="padding: 10px 20px; font-size: 14px;">Update Client Record</button>
+                        </div>
                     </form>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- 6. CONSULTATION / REQUEST CARE PAGE -->
+    <!-- 6. CONSULTATION / REQUEST CARE & ERRANDS PAGE -->
     <div id="page-consultation" class="page-view">
         <div class="form-container">
             <h2>Request Care, Homekeeping or Errands</h2>
@@ -738,6 +673,10 @@
                     </select>
                 </div>
                 <div class="form-group">
+                    <label>Description of Request (Details & Specific Needs)</label>
+                    <textarea id="requestDescription" placeholder="Please describe your schedule preferences, specific tasks, frequency, or any special requirements..." style="height: 90px;" required></textarea>
+                </div>
+                <div class="form-group">
                     <label>Best Contact Email & Phone</label>
                     <input type="text" id="contactInfo" placeholder="email@example.com / (416) 000-0000" required>
                 </div>
@@ -763,26 +702,7 @@
             window.scrollTo(0, 0);
         }
 
-        function switchAuthTab(tab) {
-            const loginSec = document.getElementById('loginSection');
-            const regSec = document.getElementById('registerSection');
-            const tabLogin = document.getElementById('tabLoginBtn');
-            const tabReg = document.getElementById('tabRegisterBtn');
-
-            if(tab === 'login') {
-                loginSec.classList.add('active');
-                regSec.classList.remove('active');
-                tabLogin.classList.add('active');
-                tabReg.classList.remove('active');
-            } else {
-                regSec.classList.add('active');
-                loginSec.classList.remove('active');
-                tabReg.classList.add('active');
-                tabLogin.classList.remove('active');
-            }
-        }
-
-        // EmailJS Consultation Handler
+        // EmailJS Consultation Handler (Includes Request Description)
         function sendConsultationEmail(event) {
             event.preventDefault();
             const btn = document.getElementById('submitBtn');
@@ -793,6 +713,7 @@
                 from_name: document.getElementById('parentName').value,
                 region: document.getElementById('parentRegion').value,
                 care_type: document.getElementById('careType').value,
+                request_description: document.getElementById('requestDescription').value,
                 contact_info: document.getElementById('contactInfo').value
             };
 
@@ -809,61 +730,27 @@
                 });
         }
 
-        // Supabase Registration
-        async function handleSupabaseRegister(event) {
+        // Forgot Password Handler
+        async function handleForgotPassword(event) {
             event.preventDefault();
-            const btn = document.getElementById('regBtn');
-            btn.innerText = "Creating Account...";
-            btn.disabled = true;
-
-            const name = document.getElementById('regName').value;
-            const email = document.getElementById('regEmail').value;
-            const password = document.getElementById('regPassword').value;
-            const region = document.getElementById('regRegion').value;
-
-            const { data, error } = await _supabase.auth.signUp({
-                email: email,
-                password: password,
-                options: { data: { full_name: name, region: region } }
-            });
-
-            if (error) {
-                alert("Registration failed: " + error.message);
-                btn.innerText = "Complete Registration";
-                btn.disabled = false;
+            const email = document.getElementById('loginEmail').value;
+            if(!email) {
+                alert('Please enter your email address in the Login box above first, then click Forgot Password.');
                 return;
             }
 
-            if (data.user) {
-                await _supabase.from('profiles').insert([
-                    { 
-                        id: data.user.id, 
-                        full_name: name, 
-                        email: email, 
-                        region: region,
-                        assigned_caregiver: "Sarah Miller, RPN / Care Specialist",
-                        careriver_details: "Police Checked & Fully Verified",
-                        weekly_schedule: "Monday – Friday",
-                        schedule_time: "8:00 AM – 4:00 PM (Managed Service)"
-                    }
-                ]);
+            const { data, error } = await _supabase.auth.resetPasswordForEmail(email, {
+                redirectTo: window.location.href,
+            });
+
+            if (error) {
+                alert('Password reset error: ' + error.message);
+            } else {
+                alert('Password reset instructions have been sent to ' + email + '. Check your inbox!');
             }
-
-            const templateParams = {
-                from_name: name,
-                region: region,
-                care_type: "New Database Portal Registration",
-                contact_info: email
-            };
-            emailjs.send("service_pm9hj4q", "template_peq98zr", templateParams);
-
-            alert('Account registered successfully! You can now sign in.');
-            btn.innerText = "Complete Registration";
-            btn.disabled = false;
-            switchAuthTab('login');
         }
 
-        // Supabase Login (Fetches dynamic profile & assigned professional data)
+        // Supabase Login (Direct Invite-Only Authentication)
         async function handleSupabaseLogin() {
             const email = document.getElementById('loginEmail').value;
             const password = document.getElementById('loginPassword').value;
@@ -902,8 +789,8 @@
                     if(profileData.weekly_schedule) {
                         document.getElementById('dashScheduleDays').innerText = profileData.weekly_schedule;
                     }
-                    if(profileData.schedule_time) {
-                        document.getElementById('dashScheduleHours').innerText = profileData.schedule_time;
+                    if(profileData.care_notes) {
+                        document.getElementById('dashCareNotes').innerText = '"' + profileData.care_notes + '"';
                     }
                 }
 
@@ -921,7 +808,6 @@
             document.getElementById('loginEmail').value = '';
             document.getElementById('loginPassword').value = '';
             document.getElementById('navPortalBtn').innerText = "Client Portal";
-            switchAuthTab('login');
         }
 
         // ADMIN LOGIN & DATA FETCHING
@@ -959,7 +845,7 @@
                 rowsHTML += `
                     <tr>
                         <td><strong>${profile.full_name || 'N/A'}</strong></td>
-                        <td>${profile.email || 'N/A'}</td>
+                        <td>${profile.email || 'N/Y'}</td>
                         <td>${profile.region || 'N/A'}</td>
                         <td>${profile.assigned_caregiver || 'Sarah Miller, RPN'}</td>
                         <td><span style="color: #4ade80; font-weight: 600;">● Active</span></td>
@@ -969,34 +855,41 @@
             tableBody.innerHTML = rowsHTML;
         }
 
-        // QUICK ASSIGN FORM HANDLER FOR COORDINATORS (Updates by email and matches name)
+        // QUICK ASSIGN & CARE NOTES HANDLER FOR COORDINATORS
         async function updateClientAssignment(event) {
             event.preventDefault();
             const clientName = document.getElementById('updateClientName').value;
             const email = document.getElementById('updateClientEmail').value;
             const caregiver = document.getElementById('updateCaregiver').value;
             const schedule = document.getElementById('updateSchedule').value;
+            const careNotes = document.getElementById('updateCareNotes').value;
 
             if(!email) {
                 alert('Please enter the client email to update.');
                 return;
             }
 
+            const updateData = { 
+                full_name: clientName,
+                assigned_caregiver: caregiver,
+                weekly_schedule: schedule 
+            };
+
+            if(careNotes) {
+                updateData.care_notes = careNotes;
+            }
+
             const { data, error } = await _supabase
                 .from('profiles')
-                .update({ 
-                    full_name: clientName,
-                    assigned_caregiver: caregiver,
-                    weekly_schedule: schedule 
-                })
+                .update(updateData)
                 .eq('email', email);
 
             if (error) {
                 alert('Update failed: ' + error.message);
             } else {
-                alert('Client assignment updated successfully for ' + clientName + '!');
+                alert('Client profile and visit notes updated successfully for ' + clientName + '!');
                 document.getElementById('updateAssignmentForm').reset();
-                loadAdminProfiles(); // Refresh the directory table
+                loadAdminProfiles(); 
             }
         }
 
