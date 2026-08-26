@@ -494,7 +494,7 @@
                 <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=600&q=80" alt="Billing">
                 <div class="card-content">
                     <h3>3. Simple Managed Billing</h3>
-                    <p>Pay through convenient, all-inclusive invoices via Interac e-Transfer while we handle compliance and oversight.</p>
+                    <p>Pay through convenient, all-inclusive invoices via Interac e-Transfer, Cheque, or Direct Payment while we handle compliance and oversight.</p>
                 </div>
             </div>
         </div>
@@ -543,17 +543,28 @@
                         <p id="dashScheduleDays" style="font-size: 15px; font-weight: 600; color: var(--text-dark);">Schedule Pending</p>
                         <p id="dashScheduleHours" style="font-size: 13px; color: #666; margin-top: 4px;">Managed Service</p>
                     </div>
-                    <div class="dash-card">
-                        <h4>Managed Billing Summary</h4>
-                        <p style="font-size: 15px; font-weight: 600; color: var(--text-dark);">All-Inclusive Service Rate</p>
-                        <p style="font-size: 13px; color: #666; margin-top: 4px;">Payment Method: <strong>Interac e-Transfer</strong></p>
-                        <div style="margin-top: 10px; background: #fff; padding: 10px; border-radius: 6px; border: 1px dashed var(--card-border);">
-                            <p style="font-size: 12px; color: var(--text-dark);"><strong>Send E-Transfers to:</strong></p>
-                            <p style="font-size: 13px; color: var(--primary); font-weight: 600;">billing@homeandnannycare.ca</p>
-                            <p style="font-size: 11px; color: #666; margin-top: 2px;">(Auto-deposit enabled. Include your family name in notes).</p>
+                    <div class="dash-card" style="grid-column: span 2;">
+                        <h4>Managed Billing & Payment Options</h4>
+                        <p style="font-size: 15px; font-weight: 600; color: var(--text-dark); margin-bottom: 10px;">All-Inclusive Service Rate</p>
+                        
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin-top: 10px;">
+                            <div style="background: #fff; padding: 12px; border-radius: 6px; border: 1px dashed var(--card-border);">
+                                <p style="font-size: 12px; color: var(--text-dark);"><strong>1. Interac e-Transfer:</strong></p>
+                                <p style="font-size: 13px; color: var(--primary); font-weight: 600;">accountspayable@neximcare.ca</p>
+                                <p style="font-size: 11px; color: #666; margin-top: 2px;">(Auto-deposit enabled. Include your family name).</p>
+                            </div>
+                            <div style="background: #fff; padding: 12px; border-radius: 6px; border: 1px dashed var(--card-border);">
+                                <p style="font-size: 12px; color: var(--text-dark);"><strong>2. Cheque Payment:</strong></p>
+                                <p style="font-size: 13px; color: var(--text-dark); margin-top: 2px;">Make payable to:</p>
+                                <p style="font-size: 12px; color: var(--primary); font-weight: 600;">Nexim Healthcare Consultant Inc</p>
+                            </div>
+                            <div style="background: #fff; padding: 12px; border-radius: 6px; border: 1px dashed var(--card-border); grid-column: span 2;">
+                                <p style="font-size: 12px; color: var(--text-dark);"><strong>3. Direct Payment / Wire Transfer:</strong></p>
+                                <p style="font-size: 12px; color: #555; margin-top: 2px;">Contact your Nexim care coordinator or billing@homeandnannycare.ca for direct deposit and institutional wire details.</p>
+                            </div>
                         </div>
                     </div>
-                    <div class="dash-card">
+                    <div class="dash-card" style="grid-column: span 2;">
                         <h4>Daily Visit & Care Notes</h4>
                         <p id="dashCareNotes" style="font-size: 14px; color: #555; font-style: italic;">"No notes posted for today yet. Your professional will update logs following their visit."</p>
                     </div>
@@ -608,18 +619,19 @@
                                 <th>Email</th>
                                 <th>Phone</th>
                                 <th>Assigned Professional</th>
+                                <th>Schedule</th>
                                 <th>Care Notes</th>
                             </tr>
                         </thead>
                         <tbody id="adminProfilesTableBody">
                             <tr>
-                                <td colspan="5" style="text-align: center; color: #666;">Click "Refresh List" to load records from Supabase...</td>
+                                <td colspan="6" style="text-align: center; color: #666;">Click "Refresh List" to load records from Supabase...</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
 
-                <!-- Quick Assign & Care Notes Form -->
+                <!-- Quick Assign & Care Notes Form (Manual Inputs Enabled) -->
                 <div style="margin-top: 25px; background: var(--bg-light); padding: 20px; border-radius: 8px; border: 1px solid var(--card-border);">
                     <h4 style="color: var(--primary); margin-bottom: 10px;">Quick Assign Professional & Update Care Notes</h4>
                     <form id="updateAssignmentForm" onsubmit="updateClientAssignment(event)" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
@@ -636,22 +648,12 @@
                             <input type="tel" id="updateClientPhone" placeholder="(416) 000-0000" style="padding: 8px; font-size: 13px;">
                         </div>
                         <div class="form-group" style="margin-bottom: 0;">
-                            <label style="font-size: 12px;">Assign Professional</label>
-                            <select id="updateCaregiver" style="padding: 8px; font-size: 13px;">
-                                <option>Sarah Miller, RPN / Care Specialist</option>
-                                <option>Jessica Taylor, PSW / Senior Support</option>
-                                <option>Michael Brown, Housekeeping Specialist</option>
-                                <option>David Wilson, Errand & Delivery Assistant</option>
-                            </select>
+                            <label style="font-size: 12px;">Assigned Professional (Manual Input)</label>
+                            <input type="text" id="updateCaregiver" placeholder="e.g. Sarah Miller, RPN" style="padding: 8px; font-size: 13px;">
                         </div>
-                        <div class="form-group" style="margin-bottom: 0;">
-                            <label style="font-size: 12px;">Assigned Schedule</label>
-                            <select id="updateSchedule" style="padding: 8px; font-size: 13px;">
-                                <option>Monday – Friday (Full-Time)</option>
-                                <option>Tuesday & Thursday (Part-Time)</option>
-                                <option>Weekly Errand / Homekeeping Run</option>
-                                <option>As-Needed Custom Schedule</option>
-                            </select>
+                        <div class="form-group" style="grid-column: span 2; margin-bottom: 0;">
+                            <label style="font-size: 12px;">Assigned Schedule (Manual Input)</label>
+                            <input type="text" id="updateSchedule" placeholder="e.g. Monday – Friday (8:00 AM – 4:00 PM)" style="padding: 8px; font-size: 13px;">
                         </div>
                         <div class="form-group" style="grid-column: span 2; margin-bottom: 0;">
                             <label style="font-size: 12px;">Daily Visit / Service Note</label>
@@ -896,19 +898,19 @@
 
         async function loadAdminProfiles() {
             const tableBody = document.getElementById('adminProfilesTableBody');
-            tableBody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: #666;">Loading client records from Supabase...</td></tr>`;
+            tableBody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #666;">Loading client records from Supabase...</td></tr>`;
 
             const { data, error } = await _supabase
                 .from('profiles')
                 .select('*');
 
             if (error) {
-                tableBody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: red;">Error loading records: ${error.message}</td></tr>`;
+                tableBody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: red;">Error loading records: ${error.message}</td></tr>`;
                 return;
             }
 
             if (!data || data.length === 0) {
-                tableBody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: #666;">No registered client profiles found yet.</td></tr>`;
+                tableBody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #666;">No registered client profiles found yet.</td></tr>`;
                 return;
             }
 
@@ -920,6 +922,7 @@
                         <td>${profile.email || 'N/A'}</td>
                         <td>${profile.phone || 'Not Provided'}</td>
                         <td>${profile.assigned_caregiver || 'Not Assigned'}</td>
+                        <td>${profile.weekly_schedule || 'Not Set'}</td>
                         <td style="font-size: 13px; color: #555; font-style: italic;">${profile.care_notes || 'No notes yet'}</td>
                     </tr>
                 `;
