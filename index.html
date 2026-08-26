@@ -17,7 +17,7 @@
 
         // Initialize Supabase Client with your new keys
         const SUPABASE_URL = "https://rmluwixvkbknsqdnqmob.supabase.co";
-        const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJtbHV3aXh2a2JrbnNxZG5xbW9iIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc1OTQ5MTIsImV4cCI6MjEwMzE3MDkxMn0.yTJDNPgbEVgelli52cuUNrz4i4Vexg8FWto2Fkyzx8M";
+        const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJtbHV3aXh2a2JrbnNxZG5xbW9iIiwicm9sZSI6InJub24iLCJpYXQiOjE3ODc1OTQ5MTIsImV4cCI6MjEwMzE3MDkxMn0.yTJDNPgbEVgelli52cuUNrz4i4Vexg8FWto2Fkyzx8M";
         const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
     </script>
     <style>
@@ -348,13 +348,42 @@
             z-index: 10;
         }
 
-        /* Footer */
+        /* Footer Styles */
         footer {
             background: #1a2e26;
-            color: #aaa;
-            padding: 40px 5%;
-            text-align: center;
+            color: #d1d5db;
+            padding: 50px 5% 30px 5%;
             font-size: 13px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 30px;
+            text-align: left;
+        }
+
+        .footer-col h4 {
+            color: var(--accent);
+            font-size: 15px;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .footer-col p {
+            font-size: 12px;
+            line-height: 1.6;
+            color: #b0b7c3;
+            margin-bottom: 6px;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            color: #9ca3af;
+            font-size: 12px;
         }
 
         @media (max-width: 768px) {
@@ -745,10 +774,34 @@
         </div>
     </div>
 
-    <!-- Footer -->
+    <!-- Official Corporate Footer with Regional Offices -->
     <footer>
-        <p>&copy; 2026 Home & Nanny Care. A Managed Division of <strong>Nexim Healthcare Consultants Inc.</strong> All rights reserved.</p>
-        <p style="margin-top: 5px;">Providing professional, fully managed home care, nanny services, eldercare, and household support across Ontario and Alberta.</p>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h4>Barrie Office</h4>
+                <p>77 Mary Street<br>Barrie, ON, L4N 1T2</p>
+                <p>Tel: 705 792 6996<br>Fax: 416 546 9118</p>
+            </div>
+            <div class="footer-col">
+                <h4>Toronto Office</h4>
+                <p>617 Vaughan Rd<br>Toronto, ON, M6C 2R4</p>
+                <p>Tel: 416 533 3600 EXT: 427<br>Fax: 416 533 3611</p>
+            </div>
+            <div class="footer-col">
+                <h4>Hamilton Office</h4>
+                <p>212-214 Kenilworth Ave N<br>Hamilton, ON, L8H 4S2</p>
+                <p>Tel: 905 481 1724</p>
+            </div>
+            <div class="footer-col">
+                <h4>Alberta Office</h4>
+                <p>330 5th Ave, Suite 1800<br>Calgary, AB, T2P 0J4</p>
+                <p>Tel: 403 900-3600</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Home & Nanny Care. A Managed Division of <strong>Nexim Healthcare Consultants Inc.</strong> All rights reserved.</p>
+            <p style="margin-top: 4px;">Providing professional, fully managed home care, nanny services, eldercare, and household support across Ontario and Alberta.</p>
+        </div>
     </footer>
 
     <!-- Scripting for Navigation, Supabase, and Admin Panel -->
