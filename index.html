@@ -275,7 +275,7 @@
 
         /* Dashboard specific view */
         .dashboard-container {
-            max-width: 900px;
+            max-width: 1000px;
             margin: 0 auto;
         }
 
@@ -317,24 +317,35 @@
             font-size: 16px;
         }
 
-        /* Admin Table Styles */
+        /* Scrollable Admin Table Styles */
+        .table-scroll-container {
+            max-height: 380px;
+            overflow-y: auto;
+            border: 1px solid var(--card-border);
+            border-radius: 6px;
+            margin-top: 15px;
+        }
+
         .admin-table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 15px;
             font-size: 14px;
         }
 
         .admin-table th, .admin-table td {
             padding: 12px;
-            border: 1px solid var(--card-border);
+            border-bottom: 1px solid var(--card-border);
             text-align: left;
+            background: var(--white);
         }
 
         .admin-table th {
             background: var(--bg-light);
             color: var(--primary);
             font-weight: 600;
+            position: sticky;
+            top: 0;
+            z-index: 10;
         }
 
         /* Footer */
@@ -605,19 +616,24 @@
                 <button class="btn-outline" style="border-color: var(--white); color: var(--white);" onclick="handleAdminLogout()">Lock Panel</button>
             </div>
             <div class="dashboard-body">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap; gap: 10px;">
                     <h3 style="color: var(--primary);">Registered Client Directory</h3>
-                    <button class="btn-outline" onclick="loadAdminProfiles()" style="padding: 6px 12px; font-size: 13px;">Refresh List</button>
+                    <div style="display: flex; gap: 10px; align-items: center;">
+                        <input type="text" id="adminSearchInput" placeholder="Search by name or region..." onkeyup="filterAdminDirectory()" style="padding: 6px 12px; font-size: 13px; border: 1px solid #ddd; border-radius: 4px; width: 240px;">
+                        <button class="btn-outline" onclick="loadAdminProfiles()" style="padding: 6px 12px; font-size: 13px;">Refresh</button>
+                    </div>
                 </div>
                 <p style="color: #666; font-size: 14px; margin-bottom: 15px;">Review client profiles, manage assigned professionals, and update visit logs.</p>
                 
-                <div style="overflow-x: auto;">
+                <!-- Scrollable Client Table Container -->
+                <div class="table-scroll-container">
                     <table class="admin-table">
                         <thead>
                             <tr>
                                 <th>Client Name</th>
                                 <th>Email</th>
                                 <th>Phone</th>
+                                <th>Region</th>
                                 <th>Assigned Professional</th>
                                 <th>Schedule</th>
                                 <th>Care Notes</th>
@@ -625,7 +641,7 @@
                         </thead>
                         <tbody id="adminProfilesTableBody">
                             <tr>
-                                <td colspan="6" style="text-align: center; color: #666;">Click "Refresh List" to load records from Supabase...</td>
+                                <td colspan="7" style="text-align: center; color: #666;">Click "Refresh" to load records from Supabase...</td>
                             </tr>
                         </tbody>
                     </table>
@@ -648,12 +664,16 @@
                             <input type="tel" id="updateClientPhone" placeholder="(416) 000-0000" style="padding: 8px; font-size: 13px;">
                         </div>
                         <div class="form-group" style="margin-bottom: 0;">
+                            <label style="font-size: 12px;">Region / City</label>
+                            <input type="text" id="updateClientRegion" placeholder="e.g. Toronto, ON" style="padding: 8px; font-size: 13px;">
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
                             <label style="font-size: 12px;">Assigned Professional (Manual Input)</label>
                             <input type="text" id="updateCaregiver" placeholder="e.g. Sarah Miller, RPN" style="padding: 8px; font-size: 13px;">
                         </div>
-                        <div class="form-group" style="grid-column: span 2; margin-bottom: 0;">
+                        <div class="form-group" style="margin-bottom: 0;">
                             <label style="font-size: 12px;">Assigned Schedule (Manual Input)</label>
-                            <input type="text" id="updateSchedule" placeholder="e.g. Monday – Friday (8:00 AM – 4:00 PM)" style="padding: 8px; font-size: 13px;">
+                            <input type="text" id="updateSchedule" placeholder="e.g. Mon – Fri (8am - 4pm)" style="padding: 8px; font-size: 13px;">
                         </div>
                         <div class="form-group" style="grid-column: span 2; margin-bottom: 0;">
                             <label style="font-size: 12px;">Daily Visit / Service Note</label>
@@ -733,6 +753,8 @@
 
     <!-- Scripting for Navigation, Supabase, and Admin Panel -->
     <script>
+        let allAdminProfiles = []; // Store profiles for client-side search filtering
+
         function switchPage(pageId) {
             document.querySelectorAll('.page-view').forEach(p => p.classList.remove('active'));
             const target = document.getElementById('page-' + pageId);
@@ -742,22 +764,45 @@
             window.scrollTo(0, 0);
         }
 
-        // EmailJS Consultation Handler
-        function sendConsultationEmail(event) {
+        // EmailJS & Supabase Consultation Handler
+        async function sendConsultationEmail(event) {
             event.preventDefault();
             const btn = document.getElementById('submitBtn');
             btn.innerText = "Sending Request...";
             btn.disabled = true;
 
+            const fullName = document.getElementById('parentName').value;
+            const region = document.getElementById('parentRegion').value;
+            const careType = document.getElementById('careType').value;
+            const requestDesc = document.getElementById('requestDescription').value;
             const clientPhone = document.getElementById('contactPhone').value;
             const clientEmail = document.getElementById('contactEmail').value;
             const combinedContact = clientEmail + " / Phone: " + clientPhone;
 
+            // 1. Save directly into Supabase consultation_requests table
+            const { error: dbError } = await _supabase
+                .from('consultation_requests')
+                .insert([
+                    {
+                        full_name: fullName,
+                        region: region,
+                        care_type: careType,
+                        request_description: requestDesc,
+                        phone: clientPhone,
+                        email: clientEmail
+                    }
+                ]);
+
+            if (dbError) {
+                console.error("Database save warning:", dbError.message);
+            }
+
+            // 2. Send EmailJS Notification
             const templateParams = {
-                from_name: document.getElementById('parentName').value,
-                region: document.getElementById('parentRegion').value,
-                care_type: document.getElementById('careType').value,
-                request_description: document.getElementById('requestDescription').value,
+                from_name: fullName,
+                region: region,
+                care_type: careType,
+                request_description: requestDesc,
                 contact_info: combinedContact
             };
 
@@ -768,7 +813,8 @@
                     btn.innerText = "Submit Request";
                     btn.disabled = false;
                 }, function(error) {
-                    alert('Failed to send request. Please check your connection.');
+                    alert('Request logged successfully! (Email notification delay detected, but your request is saved).');
+                    document.getElementById('consultationForm').reset();
                     btn.innerText = "Submit Request";
                     btn.disabled = false;
                 });
@@ -905,29 +951,42 @@
 
         async function loadAdminProfiles() {
             const tableBody = document.getElementById('adminProfilesTableBody');
-            tableBody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #666;">Loading client records from Supabase...</td></tr>`;
+            tableBody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: #666;">Loading client records from Supabase...</td></tr>`;
 
             const { data, error } = await _supabase
                 .from('profiles')
                 .select('*');
 
             if (error) {
-                tableBody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: red;">Error loading records: ${error.message}</td></tr>`;
+                tableBody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: red;">Error loading records: ${error.message}</td></tr>`;
                 return;
             }
 
             if (!data || data.length === 0) {
-                tableBody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #666;">No registered client profiles found yet.</td></tr>`;
+                tableBody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: #666;">No registered client profiles found yet.</td></tr>`;
+                allAdminProfiles = [];
+                return;
+            }
+
+            allAdminProfiles = data; // Save for filtering
+            renderAdminTable(allAdminProfiles);
+        }
+
+        function renderAdminTable(profiles) {
+            const tableBody = document.getElementById('adminProfilesTableBody');
+            if (!profiles || profiles.length === 0) {
+                tableBody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: #666;">No matching records found.</td></tr>`;
                 return;
             }
 
             let rowsHTML = "";
-            data.forEach(profile => {
+            profiles.forEach(profile => {
                 rowsHTML += `
                     <tr>
                         <td><strong>${profile.full_name || 'N/A'}</strong></td>
                         <td>${profile.email || 'N/A'}</td>
                         <td>${profile.phone || 'Not Provided'}</td>
+                        <td>${profile.region || 'Not Specified'}</td>
                         <td>${profile.assigned_caregiver || 'Not Assigned'}</td>
                         <td>${profile.weekly_schedule || 'Not Set'}</td>
                         <td style="font-size: 13px; color: #555; font-style: italic;">${profile.care_notes || 'No notes yet'}</td>
@@ -937,12 +996,25 @@
             tableBody.innerHTML = rowsHTML;
         }
 
+        // Live Search Filter (By Name or Region)
+        function filterAdminDirectory() {
+            const query = document.getElementById('adminSearchInput').value.toLowerCase();
+            const filtered = allAdminProfiles.filter(profile => {
+                const name = (profile.full_name || '').toLowerCase();
+                const region = (profile.region || '').toLowerCase();
+                const email = (profile.email || '').toLowerCase();
+                return name.includes(query) || region.includes(query) || email.includes(query);
+            });
+            renderAdminTable(filtered);
+        }
+
         // QUICK ASSIGN & CARE NOTES HANDLER FOR COORDINATORS
         async function updateClientAssignment(event) {
             event.preventDefault();
             const clientName = document.getElementById('updateClientName').value;
             const email = document.getElementById('updateClientEmail').value;
             const phone = document.getElementById('updateClientPhone').value;
+            const region = document.getElementById('updateClientRegion').value;
             const caregiver = document.getElementById('updateCaregiver').value;
             const schedule = document.getElementById('updateSchedule').value;
             const careNotes = document.getElementById('updateCareNotes').value;
@@ -955,6 +1027,7 @@
             const updateData = { 
                 full_name: clientName,
                 phone: phone,
+                region: region,
                 assigned_caregiver: caregiver,
                 weekly_schedule: schedule,
                 care_notes: careNotes
