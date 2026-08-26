@@ -15,7 +15,7 @@
             emailjs.init("v8BeDRcOH1-Gn2cIL");
         })();
 
-        // Initialize Supabase Client with your keys
+        // Initialize Supabase Client with your new keys
         const SUPABASE_URL = "https://rmluwixvkbknsqdnqmob.supabase.co";
         const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJtbHV3aXh2a2JrbnNxZG5xbW9iIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc1OTQ5MTIsImV4cCI6MjEwMzE3MDkxMn0.yTJDNPgbEVgelli52cuUNrz4i4Vexg8FWto2Fkyzx8M";
         const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -535,13 +535,13 @@
                 <div class="dashboard-grid">
                     <div class="dash-card">
                         <h4>Assigned Professional</h4>
-                        <p id="dashCaregiverName" style="font-size: 15px; font-weight: 600; color: var(--text-dark);">Sarah Miller, RPN / Care Specialist</p>
+                        <p id="dashCaregiverName" style="font-size: 15px; font-weight: 600; color: var(--text-dark);">Awaiting Coordinator Assignment</p>
                         <p id="dashCaregiverDetails" style="font-size: 13px; color: #666; margin-top: 4px;">Police Checked & Fully Verified</p>
                     </div>
                     <div class="dash-card">
                         <h4>Active Weekly Schedule</h4>
-                        <p id="dashScheduleDays" style="font-size: 15px; font-weight: 600; color: var(--text-dark);">Monday – Friday</p>
-                        <p id="dashScheduleHours" style="font-size: 13px; color: #666; margin-top: 4px;">8:00 AM – 4:00 PM (Managed Service)</p>
+                        <p id="dashScheduleDays" style="font-size: 15px; font-weight: 600; color: var(--text-dark);">Schedule Pending</p>
+                        <p id="dashScheduleHours" style="font-size: 13px; color: #666; margin-top: 4px;">Managed Service</p>
                     </div>
                     <div class="dash-card">
                         <h4>Managed Billing Summary</h4>
@@ -628,8 +628,12 @@
                             <input type="text" id="updateClientName" placeholder="e.g. Jane Doe" required style="padding: 8px; font-size: 13px;">
                         </div>
                         <div class="form-group" style="margin-bottom: 0;">
-                            <label style="font-size: 12px;">Client Email</label>
+                            <label style="font-size: 12px;">Client Email (Identifier)</label>
                             <input type="email" id="updateClientEmail" placeholder="client@example.com" required style="padding: 8px; font-size: 13px;">
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label style="font-size: 12px;">Client Phone Number</label>
+                            <input type="tel" id="updateClientPhone" placeholder="(416) 000-0000" style="padding: 8px; font-size: 13px;">
                         </div>
                         <div class="form-group" style="margin-bottom: 0;">
                             <label style="font-size: 12px;">Assign Professional</label>
@@ -914,8 +918,8 @@
                     <tr>
                         <td><strong>${profile.full_name || 'N/A'}</strong></td>
                         <td>${profile.email || 'N/A'}</td>
-                        <td>${profile.phone || 'N/A'}</td>
-                        <td>${profile.assigned_caregiver || 'Sarah Miller, RPN'}</td>
+                        <td>${profile.phone || 'Not Provided'}</td>
+                        <td>${profile.assigned_caregiver || 'Not Assigned'}</td>
                         <td style="font-size: 13px; color: #555; font-style: italic;">${profile.care_notes || 'No notes yet'}</td>
                     </tr>
                 `;
@@ -928,6 +932,7 @@
             event.preventDefault();
             const clientName = document.getElementById('updateClientName').value;
             const email = document.getElementById('updateClientEmail').value;
+            const phone = document.getElementById('updateClientPhone').value;
             const caregiver = document.getElementById('updateCaregiver').value;
             const schedule = document.getElementById('updateSchedule').value;
             const careNotes = document.getElementById('updateCareNotes').value;
@@ -939,6 +944,7 @@
 
             const updateData = { 
                 full_name: clientName,
+                phone: phone,
                 assigned_caregiver: caregiver,
                 weekly_schedule: schedule,
                 care_notes: careNotes
