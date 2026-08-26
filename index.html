@@ -764,7 +764,7 @@
             window.scrollTo(0, 0);
         }
 
-        // EmailJS & Supabase Consultation Handler
+        // EmailJS & Supabase Consultation Handler with Auto-Redirect to Home
         async function sendConsultationEmail(event) {
             event.preventDefault();
             const btn = document.getElementById('submitBtn');
@@ -812,11 +812,13 @@
                     document.getElementById('consultationForm').reset();
                     btn.innerText = "Submit Request";
                     btn.disabled = false;
+                    switchPage('home'); // Redirects to Home Page after clicking OK on alert
                 }, function(error) {
                     alert('Request logged successfully! (Email notification delay detected, but your request is saved).');
                     document.getElementById('consultationForm').reset();
                     btn.innerText = "Submit Request";
                     btn.disabled = false;
+                    switchPage('home'); // Redirects to Home Page after clicking OK on alert
                 });
         }
 
